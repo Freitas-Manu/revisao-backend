@@ -8,12 +8,12 @@ datasource db {
 
 model Food {
     id       Int      @id @default(autoincrement())
-    nome      String
-    descricao String?
-    preco       Int
-    categoria     Float
-    available DateTime @default(now())
-    createdAT DateTime @updatedAt
+    name      String
+    description String?
+    price       Float
+    category     String
+    available Boolean 
+    createdAT DateTime @default(now())
 
     @@map("food")
 }

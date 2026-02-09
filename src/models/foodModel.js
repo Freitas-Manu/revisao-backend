@@ -1,21 +1,28 @@
 import prisma from '../utils/prismaClient.js';
 
 export const create = async (data) => {
-    return await prisma.food.create({ data });
+    return await prisma.food.create({
+        data: {
+            name: data.name,
+            description: data.description,
+            price: Number(data.price),
+            category: data.category,
+            available: data.available ?? true,
+        },
+    });
 };
 
 export const findAll = async (filters = {}) => {
-    const { nome, descricao, preco, categoria, avaliacao } = filters;
+    const { name, category, available } = filters;
     const where = {};
 
-    if (nome) where.nome = { contains: nome, mode: 'insensitive' };
-    if (descricao) where.descricao = { contains: descricao, mode: 'insensitive' };
-    if (ano !== undefined) where.ano = parseInt(ano);
-    if (preco !== undefined) where.preco = parseFloat(preco);
+    if (name) where.name = { contains: name, mode: 'insensitive' };
+    if (category) where.category = { contains: category, mode: 'insensitive' };
+    if (available !== undefined) where.available = available;
 
     return await prisma.food.findMany({
         where,
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAT: 'desc' },
     });
 };
 
@@ -28,7 +35,13 @@ export const findById = async (id) => {
 export const update = async (id, data) => {
     return await prisma.food.update({
         where: { id: parseInt(id) },
-        data,
+        data: {
+            ...(data.name && { name: data.name }),
+            ...(data.description && { description: data.description }),
+            ...(data.price !== undefined && { price: data.price }),
+            ...(data.category && { category: data.category }),
+            ...(data.available !== undefined && { available: data.available }),
+        }
     });
 };
 

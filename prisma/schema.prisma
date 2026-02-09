@@ -12,7 +12,7 @@ model Food {
     description String?
     price       Float
     category     String
-    available Boolean 
+    available Boolean
     createdAT DateTime @default(now())
 
     @@map("food")
